@@ -9,7 +9,7 @@
       "purpose": "any maskable"
     },
     {
-      "src": "ruta/a/tu/icono-512.png",
+      "src": "icono-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
