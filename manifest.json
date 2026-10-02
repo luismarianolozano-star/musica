@@ -1,6 +1,6 @@
 {
-  "short_name": "Mi Web",
-  "name": "Nombre de mi Página Web",
+  "short_name": "Musica LUIS",
+  "name": "Reproductor de Musica LUIS",
   "icons": [
     {
       "src": "icono.png",
