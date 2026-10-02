@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor Local Avanzado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            max-width: 450px;
+            width: 90%;
+        }
+        h2 {
+            margin-top: 0;
+            color: #1DB954;
+        }
+        .btn-carpeta {
+            background-color: #333;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border: 2px solid #555;
+            transition: 0.2s;
+        }
+        .btn-carpeta:hover {
+            border-color: #1DB954;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .info-cancion {
+            background-color: #282828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #nombreCancion {
+            font-size: 15px;
+            word-break: break-all;
+        }
+        /* Contenedor de la Línea Temporal */
+        .progreso-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .tiempo {
+            font-size: 12px;
+            color: #b3b3b3;
+            width: 45px;
+        }
+        /* Estilo de la barra deslizante */
+        .barra-progreso {
+            flex-grow: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 5px;
+            background: #4f4f4f;
+            outline: none;
+            cursor: pointer;
+        }
+        .barra-progreso::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #1DB954;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .barra-progreso::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+        .controles {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .btn-control {
+            background-color: #1DB954;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 110px;
+            transition: 0.2s;
+        }
+        .btn-control:hover {
+            background-color: #1ed760;
+        }
+        .btn-secundario {
+            background-color: #555;
+        }
+        .btn-secundario:hover {
+            background-color: #666;
+        }
+        .contador {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Reproductor de Musica Luis</h2>
+    <p>Selecciona tu carpeta de música:</p>
+    
+    <label class="btn-carpeta">
+        📁 Abrir Carpeta Local
+        <input type="file" id="inputCarpeta" webkitdirectory directory multiple accept="audio/*" onchange="cargarCarpeta(event)">
+    </label>
+
+    <div class="info-cancion">
+        <div id="nombreCancion">Esperando música...</div>
+    </div>
+
+    <!-- Nueva Sección: Línea Temporal interactiva -->
+    <div class="progreso-container">
+        <span class="tiempo" id="tiempoActual">0:00</span>
+        <input type="range" class="barra-progreso" id="barraProgreso" value="0" min="0" max="100" oninput="cambiarTiempoManual()">
+        <span class="tiempo" id="tiempoTotal">0:00</span>
+    </div>
+
+    <div class="controles">
+        <button class="btn-control btn-secundario" onclick="reproducirSiguiente()">🔀 Siguiente</button>
+        <button class="btn-control" id="btnPlayPause" onclick="alternarPlayPause()">▶ Play</button>
+    </div>
+
+    <div class="contador" id="txtContador">Canciones listas: 0</div>
+</div>
+
+<script>
+    let listaCanciones = [];
+    const audio = new Audio();
+    let cancionUrlTemporal = null; // Guardará la referencia limpia en memoria
+
+    // EVENTO 1: Salta automáticamente cuando termina la canción
+    audio.addEventListener('ended', () => {
+        reproducirSiguiente();
+    });
+
+    // EVENTO 2: Se ejecuta continuamente mientras avanza la canción para actualizar la barra
+    audio.addEventListener('timeupdate', () => {
+        const barra = document.getElementById('barraProgreso');
+        const txtActual = document.getElementById('tiempoActual');
+        
+        if (audio.duration) {
+            // Calcula el porcentaje transcurrido y mueve la barra
+            const porcentaje = (audio.currentTime / audio.duration) * 100;
+            barra.value = porcentaje;
+            
+            // Actualiza el texto del tiempo actual corriendo
+            txtActual.innerText = formatearTiempo(audio.currentTime);
+        }
+    });
+
+    // EVENTO 3: Captura el momento exacto en que el archivo se abre para saber su duración total
+    audio.addEventListener('loadedmetadata', () => {
+        const txtTotal = document.getElementById('tiempoTotal');
+        txtTotal.innerText = formatearTiempo(audio.duration);
+    });
+
+    function cargarCarpeta(evento) {
+        const archivos = evento.target.files;
+        listaCanciones = [];
+
+        for (let i = 0; i < archivos.length; i++) {
+            if (archivos[i].name.endsWith('.mp3') || archivos[i].name.endsWith('.wav') || archivos[i].name.endsWith('.m4a')) {
+                listaCanciones.push(archivos[i]);
+            }
+        }
+
+        document.getElementById('txtContador').innerText = `Canciones listas: ${listaCanciones.length}`;
+
+        if (listaCanciones.length > 0) {
+            reproducirSiguiente();
+        } else {
+            alert("No se encontraron archivos de audio.");
+        }
+    }
+
+    function reproducirSiguiente() {
+        if (listaCanciones.length === 0) return;
+
+        // Liberación de memoria: si había un archivo sonando antes, lo borramos de la RAM del navegador
+        if (cancionUrlTemporal) {
+            URL.revokeObjectURL(cancionUrlTemporal);
+        }
+
+        const indiceAlAzar = Math.floor(Math.random() * listaCanciones.length);
+        const archivoCancion = listaCanciones[indiceAlAzar];
+
+        // Creación del puente directo a la reproducción local en memoria privada
+        cancionUrlTemporal = URL.createObjectURL(archivoCancion);
+        
+        audio.src = cancionUrlTemporal;
+        audio.play()
+            .then(() => {
+                document.getElementById('nombreCancion').innerText = archivoCancion.name;
+                document.getElementById('btnPlayPause').innerText = "⏸ Pause";
+            })
+            .catch(err => {
+                console.log("Error de reproducción, saltando...", err);
+                reproducirSiguiente();
+            });
+    }
+
+    function alternarPlayPause() {
+        if (listaCanciones.length === 0) return;
+
+        if (audio.paused) {
+            audio.play();
+            document.getElementById('btnPlayPause').innerText = "⏸ Pause";
+        } else {
+            audio.pause();
+            document.getElementById('btnPlayPause').innerText = "▶ Play";
+        }
+    }
+
+    // NUEVA FUNCIÓN: Permite arrastrar la barra o hacer clic para cambiar el momento exacto
+    function cambiarTiempoManual() {
+        const barra = document.getElementById('barraProgreso');
+        if (audio.duration) {
+            // Regla de tres simple: calcula los segundos reales basándose en el porcentaje de la barra
+            const nuevosSegundos = (barra.value / 100) * audio.duration;
+            audio.currentTime = nuevosSegundos;
+        }
+    }
+
+    // FUNCIÓN AUXILIAR: Transforma segundos puros (ej: 135) a formato reloj (02:15)
+    function formatearTiempo(segundos) {
+        if (isNaN(segundos)) return "0:00";
+        const minutos = Math.floor(segundos / 60);
+        const segundosRestantes = Math.floor(segundos % 60);
+        // Agrega un cero a la izquierda si los segundos son menores a 10
+        const segundosFormateados = segundosRestantes < 10 ? "0" + segundosRestantes : segundosRestantes;
+        return `${minutos}:${segundosFormateados}`;
+    }
+</script>
+
+</body>
+</html>
+
