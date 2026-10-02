@@ -1,0 +1,210 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    max-width: 850px;
+    width: 100%;
+}
+
+.container-reproductor {
+    flex: 1;
+    text-align: center;
+    background-color: #1e1e1e;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.container-lista {
+    width: 320px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    max-height: 480px;
+}
+
+h2 {
+    margin-top: 0;
+    color: #1DB954;
+}
+
+h3 {
+    margin-top: 0;
+    color: #b3b3b3;
+    font-size: 16px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.btn-carpeta {
+    background-color: #333;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-weight: bold;
+    border: 2px solid #555;
+    transition: 0.2s;
+}
+
+.btn-carpeta:hover {
+    border-color: #1DB954;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.info-cancion {
+    background-color: #282828;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nombreCancion {
+    font-size: 15px;
+    word-break: break-all;
+}
+
+.progreso-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.tiempo {
+    font-size: 12px;
+    color: #b3b3b3;
+    width: 45px;
+}
+
+.barra-progreso {
+    flex-grow: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 5px;
+    background: #4f4f4f;
+    outline: none;
+    cursor: pointer;
+}
+
+.barra-progreso::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #1DB954;
+    cursor: pointer;
+}
+
+.controles {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-control {
+    background-color: #1DB954;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 110px;
+    transition: 0.2s;
+}
+
+.btn-control:hover {
+    background-color: #1ed760;
+}
+
+.btn-secundario {
+    background-color: #555;
+}
+
+.btn-secundario:hover {
+    background-color: #666;
+}
+
+.lista-scroll {
+    overflow-y: auto;
+    flex-grow: 1;
+    text-align: left;
+    padding-right: 5px;
+}
+
+.lista-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lista-scroll::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 3px;
+}
+
+.item-cancion {
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: 0.2s;
+    margin-bottom: 5px;
+}
+
+.item-cancion:hover {
+    background-color: #282828;
+    color: #1DB954;
+}
+
+.item-cancion.activa {
+    background-color: #282828;
+    color: #1DB954;
+    font-weight: bold;
+}
+
+/* Diseño adaptado para pantallas táctiles y celulares */
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    .container-lista {
+        width: 100%;
+        box-sizing: border-box;
+        max-height: 300px;
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "short_name": "Mi Web",
+  "name": "Nombre de mi Página Web",
+  "icons": [
+    {
+      "src": "icono.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "ruta/a/tu/icono-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "theme_color": "#000000"
+}
