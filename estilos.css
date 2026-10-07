@@ -1,183 +1,285 @@
+/* --- CONFIGURACIÓN GENERAL --- */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #181d1b;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #0b0e14;
+    background-image: radial-gradient(circle at top right, #1e293b 0%, #0b0e14 70%);
     margin: 0;
-    padding: 20px;
+    padding: 15px;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
+    align-items: center;
+    color: #f3f4f6;
+    box-sizing: border-box;
 }
 
 .contenedor-reproductor {
-    background: #5f5e5e;
-    max-width: 600px;
+    background: rgba(22, 28, 39, 0.95);
+    backdrop-filter: blur(10px);
+    max-width: 480px;
     width: 100%;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    justify-content: center;
+    padding: 24px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255,255,255,0.1) inset;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-h2, h3 {
-    color: #ebe1e1;
-    margin-top: 0;
+h2 {
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    margin-bottom: 25px;
+    color: #ffffff;
 }
 
-.seccion-carga {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.grupo-input {
-    flex: 1;
-    border-radius: 30px;
-    min-width: 200px;
-    justify-content: center;
-}
-
-.grupo-input label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #ccc4c4;
+h3 {
     font-size: 14px;
-    justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #9ca3af;
+    margin: 20px 0 10px 0;
 }
 
-.grupo-input input {
-    width: 100%;
-    box-sizing: border-box;
-    justify-content: center;
-}
-
-.controles-principales {
-    display: flex;
-    gap: 10px;
+/* --- TARJETA DE INFORMACIÓN DE CANCIÓN --- */
+.info-cancion {
+    background: #1e2633;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
     margin-bottom: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
+    border: 1px solid rgba(255,255,255,0.03);
 }
 
-button {
-    border-radius: 15px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-    justify-content: center;
+.icono-nota {
+    font-size: 32px;
+    margin-bottom: 10px;
+    animation: pulse 2s infinite ease-in-out;
 }
 
-.btn-control {
-    background-color: #2196F3;
-    color: white;
-    border-radius: 15px;
-    font-size: 15px;
-    justify-content: center;
+#nombreCancion {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.btn-control:hover {
-    background-color: #1976D2;
-    border-radius: 25px;
-}
-
-.btn-secundario {
-    background-color: #e0e0e0;
-    border-radius: 25px;
-    color: #333;
-}
-
-.btn-secundario:hover {
-    background-color: #d5d5d5;
-    border-radius: 25px;
-}
-
-.btn-peligro {
-    background-color: #f44336;
-    color: white;
-
-}
-
-.btn-peligro:hover {
-    background-color: #da190b;
-    border-radius: 25px;
+/* --- CONTROLES Y BARRA DE PROGRESO --- */
+.progreso-bloque {
+    margin-bottom: 25px;
 }
 
 .progreso-contenedor {
     width: 100%;
-    background: #e0e0e0;
-    height: 12px;
-    border-radius: 6px;
+    background: #2a3547;
+    height: 6px;
+    border-radius: 10px;
     cursor: pointer;
-    margin: 15px 0 5px 0;
     overflow: hidden;
+    transition: height 0.2s;
+}
+
+.progreso-contenedor:hover {
+    height: 8px;
 }
 
 .barra-progreso {
     width: 0%;
     height: 100%;
-    background: #2196F3;
-    transition: width 0.1s linear;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
 }
 
 .texto-tiempo {
-    font-size: 13px;
-    color: #bba7a7;
+    font-size: 12px;
+    color: #9ca3af;
     text-align: right;
-    margin-bottom: 20px;
+    margin-top: 6px;
+    font-variant-numeric: tabular-nums;
 }
 
+/* --- BOTONES DE REPRODUCCIÓN (Modificados para un Play más grande y ancho) --- */
+.bloque-controles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+button, .custom-file-upload {
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-play {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    flex: 2; /* Hace que el botón Play ocupe el doble de espacio horizontal */
+    padding: 16px 24px;
+    border-radius: 40px; /* Bordes redondeados estilo cápsula */
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-play:hover {
+    transform: scale(1.02);
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+
+.btn-control, .btn-secundario {
+    background: #1e2633;
+    color: #e5e7eb;
+    padding: 12px 14px;
+    border-radius: 30px;
+    flex: 1; /* Los botones laterales toman un espacio estándar */
+    text-align: center;
+}
+
+/* Reducción exclusiva para los botones secundarios laterales */
+.btn-pequeño {
+    font-size: 11px; /* Letra más pequeña para que quepa bien en pantallas móviles */
+    padding: 10px 8px;
+    color: #9ca3af;
+}
+
+.btn-pequeño:hover {
+    background: #2a3547;
+    color: white;
+}     
+
+/* Botón de vinculación (Paso 2) mas llamativo */
+.btn-vincular {
+    width: 100%;
+    padding: 14px;
+    background: #10b981 !important;
+    color: white;
+    font-size: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* --- ZONA DE GESTIÓN Y ARCHIVOS --- */
+.zona-archivos {
+    background: rgba(13, 17, 23, 0.6);
+    padding: 16px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+}
+
+.seccion-carga, .seccion-respaldos {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.custom-file-upload, .btn-respaldo {
+    background: #1e2633;
+    color: #9ca3af;
+    padding: 10px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+    font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.custom-file-upload:hover, .btn-respaldo:hover {
+    background: #2a3547;
+    color: #ffffff;
+}
+
+.btn-peligro {
+    background: transparent;
+    color: #ef4444;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+.btn-peligro:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+/* --- LISTA DE REPRODUCCIÓN --- */
 .lista-canciones {
     list-style: none;
     padding: 0;
     margin: 0;
-    max-height: 300px;
+    max-height: 240px;
     overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    background: rgba(13, 17, 23, 0.4);
+    border-radius: 12px;
+}
+
+/* Personalizar barra de scroll de la playlist */
+.lista-canciones::-webkit-scrollbar {
+    width: 6px;
+}
+.lista-canciones::-webkit-scrollbar-thumb {
+    background: #2a3547;
+    border-radius: 10px;
 }
 
 .lista-canciones li {
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.lista-canciones li:last-child {
-    border-bottom: none;
-    border-radius: 25px;
+    gap: 10px;
 }
 
 .lista-canciones li:hover {
-    background: #f9f9f9;
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .nombre-cancion {
     cursor: pointer;
     flex-grow: 1;
-    border-radius: 25px;
-    color: #b6a5a5;
+    color: #d1d5db;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lista-canciones li.activo {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid #3b82f6;
 }
 
 .lista-canciones li.activo .nombre-cancion {
-    font-weight: bold;
-    color: #9cbbd4;
+    font-weight: 600;
+    color: #60a5fa;
 }
 
 .btn-borrar {
-    color: #ff5252;
+    color: #9ca3af;
     cursor: pointer;
-    border-radius: 15px;
     font-size: 18px;
-    padding: 0 5px;
+    padding: 4px 8px;
+    transition: color 0.2s;
 }
 
 .btn-borrar:hover {
-    color: #d32f2f;
-    border-radius: 15px;
+    color: #ef4444;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.08); opacity: 1; }
 }
