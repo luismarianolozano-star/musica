@@ -1,0 +1,175 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #181d1b;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor-reproductor {
+    background: #5f5e5e;
+    max-width: 600px;
+    width: 100%;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2, h3 {
+    color: #ebe1e1;
+    margin-top: 0;
+}
+
+.seccion-carga {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.grupo-input {
+    flex: 1;
+    border-radius: 30px;
+    min-width: 200px;
+}
+
+.grupo-input label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #ccc4c4;
+    font-size: 14px;
+}
+
+.grupo-input input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.controles-principales {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+button {
+    border-radius: 15px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-control {
+    background-color: #2196F3;
+    color: white;
+    border-radius: 15px;
+    font-size: 15px;
+}
+
+.btn-control:hover {
+    background-color: #1976D2;
+    border-radius: 25px;
+}
+
+.btn-secundario {
+    background-color: #e0e0e0;
+    border-radius: 25px;
+    color: #333;
+}
+
+.btn-secundario:hover {
+    background-color: #d5d5d5;
+    border-radius: 25px;
+}
+
+.btn-peligro {
+    background-color: #f44336;
+    color: white;
+
+}
+
+.btn-peligro:hover {
+    background-color: #da190b;
+    border-radius: 25px;
+}
+
+.progreso-contenedor {
+    width: 100%;
+    background: #e0e0e0;
+    height: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 15px 0 5px 0;
+    overflow: hidden;
+}
+
+.barra-progreso {
+    width: 0%;
+    height: 100%;
+    background: #2196F3;
+    transition: width 0.1s linear;
+}
+
+.texto-tiempo {
+    font-size: 13px;
+    color: #bba7a7;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.lista-canciones {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.lista-canciones li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lista-canciones li:last-child {
+    border-bottom: none;
+    border-radius: 25px;
+}
+
+.lista-canciones li:hover {
+    background: #f9f9f9;
+}
+
+.nombre-cancion {
+    cursor: pointer;
+    flex-grow: 1;
+    border-radius: 25px;
+    color: #b6a5a5;
+}
+
+.lista-canciones li.activo .nombre-cancion {
+    font-weight: bold;
+    color: #9cbbd4;
+}
+
+.btn-borrar {
+    color: #ff5252;
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 18px;
+    padding: 0 5px;
+}
+
+.btn-borrar:hover {
+    color: #d32f2f;
+    border-radius: 15px;
+}
