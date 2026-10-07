@@ -12,39 +12,56 @@
     <div class="contenedor-reproductor">
         <h2>Mi Reproductor</h2>
 
-        <!-- Selectores de archivos -->
-        <div class="seccion-carga">
-            <div class="grupo-input">
-                <label for="inputCarpeta">📁 Cargar Carpeta:</label>
-                <input type="file" id="inputCarpeta" webkitdirectory directory multiple>
-            </div>
-            
-            <div class="grupo-input">
-                <label for="inputArchivos">🎵 Agregar Canciones:</label>
-                <input type="file" id="inputArchivos" accept="audio/*" multiple>
-            </div>
-        </div>
-
-        <!-- Controles de Reproducción -->
-        <div class="controles-principales">
-            <button id="btnPlayPausa" class="btn-control">▶ Play</button>
-            <button id="btnSiguiente" class="btn-control">⏭ Siguiente</button>
-            <button id="btnAleatorio" class="btn-secundario">🔀 (Activo)</button>
-            <button id="btnLimpiar" class="btn-peligro">Borrar Lista</button>
-        </div>
-
+        <!-- Pantalla de información de la canción actual -->
         <div class="info-cancion">
+            <div class="icono-nota">🎵</div>
             <div id="nombreCancion">Esperando música...</div>
         </div>
+
         <!-- Barra de progreso y tiempo -->
-        <div class="progreso-contenedor" id="progresoContenedor">
-            <div class="barra-progreso" id="barraProgreso"></div>
+        <div class="progreso-bloque">
+            <div class="progreso-contenedor" id="progresoContenedor">
+                <div class="barra-progreso" id="barraProgreso"></div>
+            </div>
+            <div id="tiempo" class="texto-tiempo">0:00 / 0:00</div>
         </div>
-        <div id="tiempo" class="texto-tiempo">0:00 / 0:00</div>
+
+        <!-- Controles de Reproducción Principales (Estructura mejorada) -->
+<div class="bloque-controles">
+    <button id="btnAleatorio" class="btn-secundario btn-pequeño">🔀 (Activo)</button>
+    <button id="btnPlayPausa" class="btn-play">▶ Play</button>
+    <button id="btnSiguiente" class="btn-control btn-pequeño">⏭ Siguiente</button>
+</div>
+
+        <!-- Botón de Reconexión de Emergencia (Aparece centrado y llamativo si hace falta) -->
+        <button id="btnVincular" class="btn-vincular" style="display: none;" onclick="document.getElementById('inputCarpeta').click()">📁 Paso 2: Seleccionar Carpeta de Música</button>
+
+        <!-- Zona Inferior de Gestión de Archivos y Respaldos -->
+        <div class="zona-archivos">
+            <h3>Administrar Pistas</h3>
+            
+            <div class="seccion-carga">
+                <label for="inputCarpeta" class="custom-file-upload btn-utilidad">📁 Cargar Carpeta</label>
+                <input type="file" id="inputCarpeta" webkitdirectory directory multiple style="display:none;">
+                
+                <label for="inputArchivos" class="custom-file-upload btn-utilidad">➕ Añadir Canciones</label>
+                <input type="file" id="inputArchivos" accept="audio/*" multiple style="display:none;">
+            </div>
+
+            <div class="seccion-respaldos">
+                <button id="btnExportar" class="btn-respaldo">📥 Guardar Lista de Respaldo</button>
+                <button onclick="document.getElementById('btnImportar').click()" class="btn-respaldo">📤 Subir Lista de Respaldo</button>
+                <input type="file" id="btnImportar" accept=".json" style="display: none;">
+            </div>
+
+            <button id="btnLimpiar" class="btn-peligro">🗑 Limpiar Toda la Lista</button>
+        </div>
 
         <!-- Lista de canciones -->
-        <h3>Lista de Reproducción Actual</h3>
-        <ul id="listaCanciones" class="lista-canciones"></ul>
+        <div class="bloque-lista">
+            <h3>Lista de Reproducción Actual</h3>
+            <ul id="listaCanciones" class="lista-canciones"></ul>
+        </div>
     </div>
 
     <script src="app.js"></script>
