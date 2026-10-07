@@ -3,50 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Reproductor de Música</title>
-    <!-- Vinculamos el archivo de estilos externos -->
+    <title>Reproductor de Música Profesional</title>
+    <link rel="stylesheet" href="estilos.css">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="wrapper">
-    <!-- COLUMNA IZQUIERDA: REPRODUCTOR -->
-    <div class="container-reproductor">
+    <div class="contenedor-reproductor">
         <h2>Mi Reproductor</h2>
-        <p>Selecciona tu carpeta de música:</p>
-        
-        <label class="btn-carpeta">
-            📁 Abrir Carpeta Local
-            <input type="file" id="inputCarpeta" webkitdirectory directory multiple accept="audio/*" onchange="cargarCarpeta(event)">
-        </label>
+
+        <!-- Selectores de archivos -->
+        <div class="seccion-carga">
+            <div class="grupo-input">
+                <label for="inputCarpeta">📁 Cargar Carpeta:</label>
+                <input type="file" id="inputCarpeta" webkitdirectory directory multiple>
+            </div>
+            
+            <div class="grupo-input">
+                <label for="inputArchivos">🎵 Agregar Canciones:</label>
+                <input type="file" id="inputArchivos" accept="audio/*" multiple>
+            </div>
+        </div>
+
+        <!-- Controles de Reproducción -->
+        <div class="controles-principales">
+            <button id="btnPlayPausa" class="btn-control">▶ Play</button>
+            <button id="btnSiguiente" class="btn-control">⏭ Siguiente</button>
+            <button id="btnAleatorio" class="btn-secundario">🔀 (Activo)</button>
+            <button id="btnLimpiar" class="btn-peligro">Borrar Lista</button>
+        </div>
 
         <div class="info-cancion">
             <div id="nombreCancion">Esperando música...</div>
         </div>
-
-        <div class="progreso-container">
-            <span class="tiempo" id="tiempoActual">0:00</span>
-            <input type="range" class="barra-progreso" id="barraProgreso" value="0" min="0" max="100" oninput="cambiarTiempoManual()">
-            <span class="tiempo" id="tiempoTotal">0:00</span>
+        <!-- Barra de progreso y tiempo -->
+        <div class="progreso-contenedor" id="progresoContenedor">
+            <div class="barra-progreso" id="barraProgreso"></div>
         </div>
+        <div id="tiempo" class="texto-tiempo">0:00 / 0:00</div>
 
-        <div class="controles">
-            <button class="btn-control btn-secundario" onclick="reproducirSiguiente()">🔀 Siguiente</button>
-            <button class="btn-control" id="btnPlayPause" onclick="alternarPlayPause()">▶ Play</button>
-        </div>
+        <!-- Lista de canciones -->
+        <h3>Lista de Reproducción Actual</h3>
+        <ul id="listaCanciones" class="lista-canciones"></ul>
     </div>
 
-    <!-- COLUMNA DERECHA: LISTA DE CANCIONES -->
-    <div class="container-lista">
-        <h3>Lista de Canciones (<span id="contadorLista">0</span>)</h3>
-        <div class="lista-scroll" id="listaCancionesUI">
-            <!-- Las canciones se inyectarán dinámicamente desde JS -->
-        </div>
-    </div>
-</div>
-
-<!-- Vinculamos el archivo de lógica JavaScript -->
-<script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
+
