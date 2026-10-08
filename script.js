@@ -246,6 +246,7 @@ const btnExportar = document.getElementById('btnExportar');
 const btnImportar = document.getElementById('btnImportar');
 
 // Función para descargar el JSON con los nombres de la playlist
+// Función para descargar el respaldo corregida para celulares Android
 btnExportar.addEventListener('click', () => {
     if (playlist.length === 0) {
         alert("No hay canciones en la lista para exportar.");
@@ -257,16 +258,29 @@ btnExportar.addEventListener('click', () => {
     
     // Lo transformamos a texto JSON
     const dataStr = JSON.stringify(estructuraRespaldo, null, 2);
-    const blob = new Blob([dataStr], { type: "application/json" });
+    
+    // Cambiamos el tipo a text/plain para que Android lo acepte sin pestañear
+    const blob = new Blob([dataStr], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     
-    // Forzamos la descarga del archivo en PC o Android
+    // Creamos el enlace de descarga
     const enlace = document.createElement("a");
     enlace.href = url;
-    enlace.download = "respaldo_reproductor_nombres.json";
+    
+    // Le ponemos extensión .txt (Android lo descarga al instante en carpeta Download)
+    enlace.download = "respaldo_reproductor.txt";
+    
+    // Ocultamos el enlace del diseño visual
+    enlace.style.display = "none";
+    
+    // TRUCO PARA CELULARES: Lo metemos al documento antes de hacerle click
+    document.body.appendChild(enlace);
+    
+    // Forzamos la descarga en Android
     enlace.click();
-
-    // Liberamos memoria
+    
+    // Limpieza total: lo borramos del documento y liberamos la memoria
+    document.body.removeChild(enlace);
     URL.revokeObjectURL(url);
 });
 
