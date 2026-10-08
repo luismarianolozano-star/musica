@@ -16,6 +16,8 @@ let indiceActual = 0;
 let esAleatorio = true;
 const reproductor = new Audio();
 let db;
+let nombresBuscados = []; // <--- NUEVA: Guarda temporalmente la lista a reconectar
+
 
 // --- 1. CONFIGURACIÓN DE LA BASE DE DATOS LOCAL (IndexedDB) ---
 const request = indexedDB.open("ReproductorMusicaDB", 1);
@@ -32,17 +34,39 @@ request.onsuccess = (e) => {
     cargarListaDesdeDB(); 
 };
 
-// --- 2. CAPTURA DE ARCHIVOS DE AUDIO ---
+// --- 2. CAPTURA DE ARCHIVOS DE AUDIO (Modificado para autoreconexión) ---
 inputCarpeta.addEventListener('change', (e) => {
-    const archivos = Array.from(e.target.files).filter(file => file.type.startsWith('audio/'));
-    guardarYAgregarArchivos(archivos);
+    const archivosDelCelular = Array.from(e.target.files);
+    const btnVincular = document.getElementById('btnVincular'); // <--- Agregar esta línea
+    
+    if (nombresBuscados.length > 0) {
+        const cancionesEncontradas = archivosDelCelular.filter(archivo => 
+            nombresBuscados.includes(archivo.name)
+        );
+
+        if (cancionesEncontradas.length === 0) {
+            alert("No se encontraron canciones que coincidan en la carpeta seleccionada.");
+            return;
+        }
+
+        guardarYAgregarArchivos(cancionesEncontradas);
+        alert(`¡Se han reconectado ${cancionesEncontradas.length} canciones con éxito!`);
+        
+        nombresBuscados = []; 
+        btnVincular.style.display = "none"; // <--- OCULTAR EL BOTÓN TRAS EL ÉXITO
+    } else {
+        const archivosAudio = archivosDelCelular.filter(file => file.type.startsWith('audio/'));
+        guardarYAgregarArchivos(archivosAudio);
+    }
 });
+
 
 inputArchivos.addEventListener('change', (e) => {
     const archivos = Array.from(e.target.files);
     guardarYAgregarArchivos(archivos);
     inputArchivos.value = ""; 
 });
+
 
 // --- 3. PROCESAMIENTO Y MEMORIA ---
 function guardarYAgregarArchivos(nuevosArchivos) {
@@ -214,4 +238,73 @@ btnLimpiar.addEventListener('click', () => {
     actualizarInterfazLista();
     barraProgreso.style.width = "0%";
     tiempoTxt.textContent = "0:00 / 0:00";
+});
+
+// --- 8. LÓGICA DE EXPORTACIÓN E IMPORTACIÓN DE RESPALDO LIGERO ---
+
+const btnExportar = document.getElementById('btnExportar');
+const btnImportar = document.getElementById('btnImportar');
+
+// Función para descargar el JSON con los nombres de la playlist
+btnExportar.addEventListener('click', () => {
+    if (playlist.length === 0) {
+        alert("No hay canciones en la lista para exportar.");
+        return;
+    }
+
+    // Creamos una estructura simple solo con los nombres de los archivos
+    const estructuraRespaldo = playlist.map(cancion => ({ nombre: cancion.nombre }));
+    
+    // Lo transformamos a texto JSON
+    const dataStr = JSON.stringify(estructuraRespaldo, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    
+    // Forzamos la descarga del archivo en PC o Android
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    enlace.download = "respaldo_reproductor_nombres.json";
+    enlace.click();
+
+    // Liberamos memoria
+    URL.revokeObjectURL(url);
+});
+
+// Función para leer el archivo JSON subido (Corregida para Android/Chrome)
+// Función para leer el archivo JSON subido (CORREGIDA)
+btnImportar.addEventListener('change', (e) => {
+    // CAMBIO AQUÍ: Agregamos [0] para obtener el archivo individual
+    const archivoRespaldo = e.target.files[0]; 
+    if (!archivoRespaldo) return;
+
+    const lector = new FileReader();
+    const btnVincular = document.getElementById('btnVincular');
+
+    lector.onload = function(evento) {
+        try {
+            const datosImportados = JSON.parse(evento.target.result);
+            
+            if (!Array.isArray(datosImportados)) {
+                alert("El archivo de respaldo no tiene un formato válido.");
+                return;
+            }
+
+            // Almacenamos los nombres que necesitamos rescatar
+            nombresBuscados = datosImportados.map(item => item.nombre);
+            
+            alert("¡Lista de canciones cargada en memoria!\n\nPara completar la restauración, presiona el nuevo botón verde que apareció en pantalla y selecciona tu carpeta de música.");
+            
+            // MOSTRAMOS el botón de vinculación para que el usuario lo toque físicamente
+            btnVincular.style.display = "inline-block";
+
+        } catch (error) {
+            console.error(error);
+            alert("Error al leer el archivo. Asegúrate de elegir el archivo .json correcto de tu respaldo.");
+        } finally {
+            btnImportar.value = ""; // Limpiamos el input
+        }
+    };
+
+    // Ahora sí pasamos el archivo individual y no la lista completa
+    lector.readAsText(archivoRespaldo);
 });
