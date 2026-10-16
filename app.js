@@ -34,6 +34,34 @@ request.onsuccess = (e) => {
     cargarListaDesdeDB(); 
 };
 
+//CARGA INICIAL PARA CHATBOT
+// =========================================================================
+// 👇 DETECTOR DE APERTURA AUTOMÁTICA DESDE EL CHATBOT 👇
+// =========================================================================
+window.addEventListener('load', () => {
+    // Leemos los parámetros de la URL de la barra de direcciones
+    const parametrosURL = new URLSearchParams(window.location.search);
+    const accionDirecta = parametrosURL.get('action');
+
+    // Si el chatbot nos abrió mandando la orden "play"
+    if (accionDirecta === 'play') {
+        console.log("🚀 PWA Iniciada desde el Chatbot. Ejecutando música inmediatamente.");
+        
+        // Buscamos tu reproductor (Asegúrate de que 'miAudio' sea el ID real de tu etiqueta <audio>)
+        const reproductorHTML = document.getElementById('miAudio'); 
+        
+        if (reproductorHTML) {
+            // Un pequeño retraso de medio segundo para asegurar que el navegador cargó el archivo de audio
+            setTimeout(() => {
+                reproductorHTML.play().catch(error => {
+                    console.log("⚠️ El celular bloqueó el autoplay. Se requiere un toque en la pantalla.", error);
+                });
+            }, 500);
+        }
+    }
+});
+
+
 // --- 2. CAPTURA DE ARCHIVOS DE AUDIO (Modificado para autoreconexión) ---
 inputCarpeta.addEventListener('change', (e) => {
     const archivosDelCelular = Array.from(e.target.files);
